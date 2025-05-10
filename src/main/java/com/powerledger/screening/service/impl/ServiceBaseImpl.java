@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.ParameterizedType;
-
 @NoArgsConstructor
 public class ServiceBaseImpl<T extends EntityBase, P> implements ServiceBase<T, P> {
 
@@ -130,18 +128,5 @@ public class ServiceBaseImpl<T extends EntityBase, P> implements ServiceBase<T, 
 
     private void checkExistence(Mono<T> entity, P id) {
         entity.switchIfEmpty(Mono.error( new ResourceNotFoundException("entity not found")));
-    }
-
-    private String getEntityName() {
-        String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
-                .getTypeName();
-
-        String entityName = "";
-
-        try {
-            entityName = Class.forName(className).getSimpleName();
-        } catch (Exception ignored) {
-        }
-        return entityName;
     }
 }
