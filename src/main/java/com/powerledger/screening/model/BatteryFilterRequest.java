@@ -2,10 +2,12 @@ package com.powerledger.screening.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BatteryFilterRequest {
@@ -13,7 +15,8 @@ public class BatteryFilterRequest {
     private Float minimumWatt;
     private Float maximumWatt;
 
-    @Data
+    @Setter
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Range {

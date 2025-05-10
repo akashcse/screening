@@ -2,9 +2,9 @@ package com.powerledger.screening.model;
 
 import com.powerledger.screening.enums.CodeEnum;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class ErrorInfo {
     private CodeEnum code;

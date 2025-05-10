@@ -6,7 +6,6 @@ import com.powerledger.screening.model.BatteryFilterRequest;
 import com.powerledger.screening.model.BatteryFilterResponse;
 import com.powerledger.screening.repository.BatteryRepository;
 import com.powerledger.screening.service.contract.BatteryService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,13 +15,11 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class BatteryServiceImpl extends ServiceBaseImpl<Battery, Long> implements BatteryService {
     private final BatteryRepository batteryRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public BatteryServiceImpl(BatteryRepository batteryRepository, ModelMapper modelMapper) {
+    public BatteryServiceImpl(BatteryRepository batteryRepository) {
         super(batteryRepository);
         this.batteryRepository = batteryRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -30,11 +27,9 @@ public class BatteryServiceImpl extends ServiceBaseImpl<Battery, Long> implement
         AtomicReference<Double> total = new AtomicReference<>(0d);
         AtomicReference<Integer> count = new AtomicReference<>(0);
         return batteryFilterRequest
-                .doOnNext(batteryFilter -> {
-                    if(batteryFilter.getMaximumWatt() != null && batteryFilter.getMinimumWatt() !=null) {
-                        Mono.error(new BadRequestException("Either minimum or maximum is expected"));
-                    }
-                })
+                .filter(batteryFilter -> batteryFilter.getMaximumWatt() == null ||
+                        batteryFilter.getMinimumWatt() ==null)
+                .switchIfEmpty(Mono.error(new BadRequestException("Either minimum or maximum is expected")))
                 .flatMapMany(batteryFilter -> {
                     if(batteryFilter.getMaximumWatt() != null) {
                         return batteryRepository.findByPostcodeBetweenAndCapacityLessThanEqualAndIsDeletedFalse(

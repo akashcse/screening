@@ -46,11 +46,6 @@ public class ServiceBaseImpl<T extends EntityBase, P> implements ServiceBase<T, 
         return this.getEntity(id);
     }
 
-    @Override
-    public Mono<T> getByIdThoDeleted(P id) {
-        return repository.findById(id).switchIfEmpty(Mono.empty());
-    }
-
     /**
      * Create a new entity of type T
      *
@@ -108,7 +103,7 @@ public class ServiceBaseImpl<T extends EntityBase, P> implements ServiceBase<T, 
     @Transactional
     public Mono<T> delete(P id) {
         if (id == null) {
-            Mono.error(new BadRequestException("id can not be null"));
+            return Mono.error(new BadRequestException("id can not be null"));
         }
         Mono<T> entity = this.getEntity(id);
         checkExistence(entity, id);

@@ -9,8 +9,6 @@ public interface ServiceBase<T extends EntityBase, P> {
 
   Mono<T> getById(P id);
 
-  Mono<T> getByIdThoDeleted(P id);
-
   Mono<T> create(T entity);
 
   Mono<T> update(P id, T entity);

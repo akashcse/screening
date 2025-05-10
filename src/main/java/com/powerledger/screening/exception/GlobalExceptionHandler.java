@@ -26,9 +26,7 @@ public class GlobalExceptionHandler  extends ResponseStatusExceptionHandler {
         //Get all fields errors
         List<ErrorInfo> errors = ex.getConstraintViolations()
                 .stream().map(ConstraintViolation::getMessage)
-                .map(errorMessage -> {
-                    return new ErrorInfo(CodeEnum.REQUIRED, errorMessage);
-                })
+                .map(errorMessage -> new ErrorInfo(CodeEnum.REQUIRED, errorMessage))
                 .toList();
 
         return handleException(ex.getCause(), errors, HttpStatus.BAD_REQUEST);

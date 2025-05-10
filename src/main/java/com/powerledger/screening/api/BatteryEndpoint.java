@@ -68,7 +68,7 @@ public class BatteryEndpoint {
                     content = @Content(schema = @Schema(implementation = ErrorInfo.class))),
     })
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "filter")
+    @PostMapping(value = "/filter")
     public Mono<BatteryFilterResponse> filterBatteries(@RequestBody @Valid Mono<BatteryFilterRequest> batteryFilterRequest) {
         log.debug("request filter batteries");
         return batteryService.filter(batteryFilterRequest);
