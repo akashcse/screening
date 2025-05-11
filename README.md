@@ -22,7 +22,7 @@
 * Swagger documentation
   - Added swagger documentation to expose API definitions to client
 * Blockhound
-  - Used to find any block/no reactive code
+  - Used to find any block/non reactive code
 * Junit tests
   - Added junit tests for all service methods
 * Integration test
