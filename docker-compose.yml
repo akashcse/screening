@@ -1,0 +1,31 @@
+services:
+  screeningApp:
+    build: ./
+    container_name: screeningApp
+    image: 'screening'
+    restart: always
+    ports:
+      - 4005:4005
+    depends_on:
+      - postgresDB
+    environment:
+      - POWERLEDGER_API_DB_HOST=host.docker.internal
+      - POWERLEDGER_API_DB_PORT=4006
+      - POWERLEDGER_API_DB_NAME=powerledger
+      - POWERLEDGER_API_DB_USER=postgres
+      - POWERLEDGER_API_DB_PASSWORD=12345
+
+  postgresDB:
+    image: 'postgres'
+    container_name: postgresDB
+    ports:
+      - "4006:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=powerledger
+    volumes:
+      # Just specify a path and let the Engine create a volume
+      - screeningdata:/var/lib/postgresql/screening
+volumes:
+  screeningdata:
