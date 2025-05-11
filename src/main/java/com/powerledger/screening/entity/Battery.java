@@ -8,6 +8,9 @@ import lombok.Setter;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+/**
+ * Battery entity
+ */
 @Getter
 @Setter
 @Table(name = "batteries", schema = "public")

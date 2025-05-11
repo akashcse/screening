@@ -10,6 +10,9 @@ import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.LocalDateTime;
 
+/**
+ * Common properties for all entity
+ */
 @Getter
 @Setter
 @NoArgsConstructor

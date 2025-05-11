@@ -1,4 +1,4 @@
-package com.powerledger.screening.config;
+package com.powerledger.screening.filter;
 
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+/**
+ * Filter for added requestId for better tracing
+ */
 @Component
 public class RequestIdFilter implements WebFilter {
 
@@ -17,6 +20,7 @@ public class RequestIdFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        //checking if client send requestId
         String requestId = exchange.getRequest().getHeaders().getFirst(REQUEST_ID_HEADER);
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();

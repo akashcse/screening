@@ -7,16 +7,29 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Used for common tasks
+ */
 public class EntityUtils {
 
     private EntityUtils() {
         // Private constructor
     }
 
+    /**
+     * Copy properties from source to destination
+     * @param src
+     * @param target
+     */
     public static void copyNonNullProperties(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }
 
+    /**
+     * Get all null properties names
+     * @param source
+     * @return String[]
+     */
     public static String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
         java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();

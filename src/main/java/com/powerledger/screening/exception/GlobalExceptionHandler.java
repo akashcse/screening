@@ -2,8 +2,6 @@ package com.powerledger.screening.exception;
 
 import com.powerledger.screening.enums.CodeEnum;
 import com.powerledger.screening.model.ErrorInfo;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +15,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Handle all exception in this application
+ */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler  extends ResponseStatusExceptionHandler {
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public Mono<ResponseEntity<List<ErrorInfo>>> handleConstraintViolationException(ConstraintViolationException ex) {
-        //Get all fields errors
-        List<ErrorInfo> errors = ex.getConstraintViolations()
-                .stream().map(ConstraintViolation::getMessage)
-                .map(errorMessage -> new ErrorInfo(CodeEnum.REQUIRED, errorMessage))
-                .toList();
-
-        return handleException(ex.getCause(), errors, HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(BadRequestException.class)
     public Mono<ResponseEntity<List<ErrorInfo>>> handleBadRequestException(BadRequestException ex) {
@@ -51,6 +41,14 @@ public class GlobalExceptionHandler  extends ResponseStatusExceptionHandler {
                 ex.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+    /**
+     * Generate error response
+     * @param throwable
+     * @param errors
+     * @param httpStatus
+     * @return List<ErrorInfo>
+     */
     private Mono<ResponseEntity<List<ErrorInfo>>> handleException(Throwable throwable, List<ErrorInfo> errors, HttpStatus httpStatus) {
         String errorMessage = errors.stream().map(errorInfo ->
                 errorInfo.getDescription() + " " + errorInfo.getCode()

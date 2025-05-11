@@ -13,6 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Template for common service
+ * @param <T>
+ * @param <P>
+ */
 @NoArgsConstructor
 public class ServiceBaseImpl<T extends EntityBase, P> implements ServiceBase<T, P> {
 

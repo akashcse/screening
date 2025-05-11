@@ -1,5 +1,8 @@
 package com.powerledger.screening.enums;
 
+/**
+ * Enum used as error code
+ */
 public enum CodeEnum {
     REQUIRED,
     INVALID_REQUEST,

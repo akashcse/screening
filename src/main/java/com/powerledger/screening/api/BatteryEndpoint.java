@@ -28,6 +28,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+/**
+ * Apis for register battery and
+ * filter battery information
+ */
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class BatteryEndpoint {
             summary = "Aggregate battery power")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "successful operation"),
-            @ApiResponse(responseCode = "400", description = "Missing required properties",
+            @ApiResponse(responseCode = "406", description = "Missing required properties",
                     content = @Content(schema = @Schema(implementation = ErrorInfo.class))),
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = @Content(schema = @Schema(implementation = ErrorInfo.class))),
@@ -51,8 +55,11 @@ public class BatteryEndpoint {
     public Flux<BatteryInfo> aggregateBatteries(@RequestBody @Valid Flux<BatteryInfo> batteryInfos) {
         log.debug("request aggregate batteries");
         return batteryInfos
+                //delay 1 sec to demonstrate the spring boot reactive stream
                 .delayElements(Duration.ofSeconds(1))
+                //map model to entity
                 .map(batteryInfo -> modelMapper.map(batteryInfo, Battery.class))
+                //register battery
                 .map(batteryService::create)
                 .flatMap(batteryMono -> batteryMono
                         .map(battery -> modelMapper.map(battery, BatteryInfo.class)));
