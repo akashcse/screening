@@ -65,6 +65,7 @@ java -jar target/screening.jar
 ```
 ### cURL command to access APIs
 Following cURL command used in Windows, it may need modification in differnet env
+
 For register batteries
 ```
 curl -XPOST -H "Content-type: application/json" -d "[{\"name\":\"Cannington\",\"postcode\":\"6107\",\"capacity\":13500},{\"name\":\"Midland\",\"postcode\":\"6107\",\"capacity\":50500},{\"name\":\"Hay Street\",\"postcode\":\"6000\",\"capacity\":23500}]" "localhost:4005/batteries"
