@@ -8,6 +8,8 @@ services:
       - 4005:4005
     depends_on:
       - postgresDB
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - POWERLEDGER_API_DB_HOST=host.docker.internal
       - POWERLEDGER_API_DB_PORT=4006
